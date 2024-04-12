@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from fastapi.responses import RedirectResponse
 from fastapi.responses import JSONResponse
 from starlette.middleware.sessions import SessionMiddleware
-
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="your_secret_key")
 CLIENT_ID = "faa3869240e454c8a6be06fbc2974992"
@@ -17,10 +16,6 @@ TOKEN_URL = 'https://kauth.kakao.com/oauth/token'
 API_BASE_URL = 'https://kapi.kakao.com/v2/user/me'
 
 @app.get('/')
-async def index():
-    return "please press for service[spotify-login] <a href='/login'> login </a>"
-
-@app.get('/login')
 async def login():
 
     params = {
