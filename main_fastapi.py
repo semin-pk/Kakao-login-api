@@ -44,10 +44,16 @@ async def callback(request: Request):
             'code': request.query_params['code'],
             'grant_type': 'authorization_code',
             'redirect_uri':REDIRECT_URI,
-            'client_id': CLIENT_ID
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET
         }
-        response = requests.post(TOKEN_URL, data=req_body, headers = {'Content-type: application/x-www-form-urlencoded;charset=utf-8'})
+        headers = {
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        }
+        response = requests.post(TOKEN_URL, data=req_body, headers=headers)
         token_info = response.json()
+        if 'access_token' not in token_info:
+            return JSONResponse({"error": "Access token not found in response"})
         session['access_token'] = token_info['access_token']
         session['refresh_token'] = token_info['refresh_token']
         session['expires_at'] = datetime.now().timestamp() + token_info['expires_in']
